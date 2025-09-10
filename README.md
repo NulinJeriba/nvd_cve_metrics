@@ -43,3 +43,6 @@ Notes:
 * The fetch script will start from the last fetched offset automatically, so you don't need to fetch all the data every time.
 * If you want to start fresh, delete your database file before running the fetch script.
 * The fetch process handles API rate limiting and network interruptions gracefully.
+![CVE ID with metric NA](screenshots/cve%20id%20-%20metric%20NA.png)
+![CVE ID with metrics](screenshots/cve%20id%20with%20metrics.png)
+![List page](screenshots/list%20page%20.png)
