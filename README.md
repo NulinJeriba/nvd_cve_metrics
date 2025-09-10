@@ -40,9 +40,7 @@ Open your browser at [http://localhost:5000/cves/list](http://localhost:5000/cve
 
 - Connects to the official NVD REST API: `https://services.nvd.nist.gov/rest/json/cves/2.0`.
 - Supports paginated data fetching with `startIndex` and `resultsPerPage` parameters.
-- Uses multithreading (`ThreadPoolExecutor`) to fetch pages concurrently.
-- Dedicated writer thread batches inserts into SQLite to prevent DB locking.
-- Extracts and stores CVE metadata, CVSS v2 metrics, and CPE matches.
+- Extracts and stores CVE metadata, CVSS v2 metrics.
 
 **Usage:**
 
