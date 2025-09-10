@@ -1,48 +1,65 @@
-NVD CVE SQLite Database & Flask Web App
+# NVD CVE SQLite Database & Flask Web App
 
-OVERVIEW
+## Overview
 
-This project downloads the National Vulnerability Database (NVD) CVE dataset via the official NVD API and stores it locally in a SQLite database. It includes a Flask web application that allows browsing, searching, and detailed viewing of vulnerability CVEs with full CVSS V2 metrics and CPE information.
+This project downloads the National Vulnerability Database (NVD) CVE dataset via the official NVD API and stores it locally in a SQLite database. It includes a Flask web application to browse, search, and view detailed vulnerability CVEs with full CVSS V2 metrics and associated CPE information.
 
-Setup Instructions:
-Prerequisites
-1. Python 3.8+
-2. Virtual environment recommended
-3. Internet access to fetch from NVD API
+## Setup Instructions
 
-Database Initialization & Data Fetching
-Run the fetch script to create tables and start importing CVE data into SQLite:
+### Prerequisites
+- Python 3.8+
+- Virtual environment recommended
+- Internet access to fetch from NVD API
 
--------------------> python fetch_all_cves_parallel.py
+### Database Initialization & Data Fetching
 
-1. The script automatically resumes fetching from where it left off based on your existing database content.
-2. This allows restarting if interrupted without fetching data from the beginning again.
-3. Fetching the full dataset can take several hours depending on network and machine speed.
+Run the fetch script to create tables and import CVE data into SQLite:
 
-Running the Flask Web Application
+python fetch_all_cves_parallel.py
+
+- The script automatically resumes fetching from the last offset.
+- Allows restarting if interrupted without re-fetching all data.
+- Fetching the full dataset may take several hours depending on network and machine speed.
+- Handles API rate limiting and network interruptions gracefully.
+
+### Running the Flask Web Application
+
 Start the Flask app:
--------------------> python app.py
-Open your web browser at:
-http://localhost:5000/cves/list
-Browse and search CVEs, and click to view detailed metrics and CPE info.
 
-Database Schema
-1. cves: Stores CVE details and CVSS V2 metrics including sub-metrics.
+python app.py
+Open your browser at [http://localhost:5000/cves/list](http://localhost:5000/cves/list) to browse and search CVEs, and click items for detailed metrics and CPE info.
 
-*Code Highlights*
-1. fetch_all_cves_parallel.py:
----> Concurrently fetches and parses CVE data from the NVD API with a dedicated database writer thread to improve performance and avoid locking issues.
+## Database Schema
 
-2. app.py:
----> Flask web server serving CVE list and detail pages powered by the SQLite database.
+- `cves`: Stores CVE details and CVSS V2 metrics including sub-metrics.
 
-3. templates/detail.html:
----> Displays CVE description alongside detailed CVSS V2 metric tables and associated CPE information.
 
-Notes:
-* The fetch script will start from the last fetched offset automatically, so you don't need to fetch all the data every time.
-* If you want to start fresh, delete your database file before running the fetch script.
-* The fetch process handles API rate limiting and network interruptions gracefully.
+## Project API Documentation
+
+### NVD CVE Fetcher Script (`fetch_all_cves_parallel.py`)
+
+- Connects to the official NVD REST API: `https://services.nvd.nist.gov/rest/json/cves/2.0`.
+- Supports paginated data fetching with `startIndex` and `resultsPerPage` parameters.
+- Uses multithreading (`ThreadPoolExecutor`) to fetch pages concurrently.
+- Dedicated writer thread batches inserts into SQLite to prevent DB locking.
+- Extracts and stores CVE metadata, CVSS v2 metrics, and CPE matches.
+
+**Usage:**
+
+python fetch_all_cves_parallel.py
+
+### Flask Web Application (`app.py`)
+
+- Serves data from the local SQLite database.
+- Key endpoints:
+  - `/cves/list`: Paginated list of CVEs.
+  - `/cves/<cve_id>`: Detailed view of a CVE’s description, CVSS V2 metrics, and CPE data.
+
+## Notes
+
+- Delete your database file to start fetching fresh data.
+- Use the `.gitignore` file to exclude the local database file (`database/nvd_cve.db`) from version control.
+- The fetch script is designed to be resilient to API limits and interruptions.
 
 ![List page](screenshots/list%20page%20.png)
 
