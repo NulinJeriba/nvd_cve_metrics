@@ -1,0 +1,7 @@
+# Ignore local SQLite database file
+database/nvd_cve.db
+
+# Python virtual environment folder (adjust if named differently)
+venv/
+__pycache__/
+*.pyc

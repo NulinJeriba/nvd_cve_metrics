@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ cve.cve_id }}</title>
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <h1>{{ cve.cve_id }}</h1>
+
+    <h3>Description:</h3>
+    <p>{{ cve.description }}</p>
+
+    <h3>CVSS V2 Metrics:</h3>
+    <p>
+      Severity: {{ cve.cvss_v2_severity if cve.cvss_v2_severity else 'N/A' }}
+      Score: {{ cve.cvss_v2_score if cve.cvss_v2_score is not none else 'N/A' }}
+    </p>
+    <p>
+      Vector String: {{ cve.cvss_v2_vector if cve.cvss_v2_vector else 'N/A' }}
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>Metric</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Exploitability Score</td>
+                <td>{{ cve.exploitability_score if cve.exploitability_score is not none else 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td>Impact Score</td>
+                <td>{{ cve.impact_score if cve.impact_score is not none else 'N/A' }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <br>
+    <a href="/cves/list">Back to CVE List</a>
+</body>
+</html>
